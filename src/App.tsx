@@ -428,7 +428,7 @@ function openVentuskyRadarLayer() {
     cursor: "pointer",
   };
 
-  return (
+    return (
     <main
       style={{
         fontFamily: "Arial, sans-serif",
@@ -441,7 +441,7 @@ function openVentuskyRadarLayer() {
     >
       <section
         style={{
-          maxWidth: 1200,
+          maxWidth: 1400,
           margin: "0 auto",
           background: colors.cardBg,
           color: colors.text,
@@ -460,206 +460,415 @@ function openVentuskyRadarLayer() {
             gap: 16,
             alignItems: "center",
             flexWrap: "wrap",
+            marginBottom: 20,
           }}
         >
-          <div>
-            <h1
-              style={{
-                marginTop: 0,
-                marginBottom: 8,
-                fontSize: 42,
-                color: colors.heading,
-              }}
-            >
-              天气云图查看器
-            </h1>
-
-            <p style={{ color: colors.mutedText, fontSize: 16, marginTop: 0 }}>
-              输入城市或地点，查看 Ventusky 互动天气地图。
-            </p>
-          </div>
-
-          <select
-  value={theme}
-  onChange={(e) => setTheme(e.target.value as ThemeMode)}
+          <div
   style={{
-    ...secondaryButtonStyle,
-    appearance: "none",
+    textAlign: "center",
+    flex: 1,
   }}
 >
-  <option value="system">跟随系统</option>
-  <option value="light">浅色模式</option>
-  <option value="dark">深色模式</option>
-</select>
-  </div>
-        <div
-          style={{
-            display: "flex",
-            gap: 8,
-            marginBottom: 12,
-            flexWrap: "wrap",
-          }}
-        >
-          <input
-            value={place}
-            onChange={(e) => setPlace(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSearch();
-              }
-            }}
-            placeholder="输入城市或地点，例如 London"
-            style={{
-              ...inputStyle,
-              width: 360,
-              maxWidth: "100%",
-            }}
-          />
+  <h1
+    style={{
+      marginTop: 0,
+      marginBottom: 8,
+      fontSize: 46,
+      color: colors.heading,
+      fontFamily: "KaiTi, STKaiti, serif",
+      fontWeight: 700,
+      letterSpacing: 2,
+    }}
+  >
+    天气云图查看器
+  </h1>
 
-          <button
-            onClick={() => handleSearch()}
-            disabled={isLoading}
+  <p
+    style={{
+      color: colors.mutedText,
+      fontSize: 18,
+      marginTop: 0,
+      fontFamily: "KaiTi, STKaiti, serif",
+    }}
+  >
+    输入城市或地点，查看 Ventusky 互动天气地图。
+  </p>
+</div>
+
+          <select
+            value={theme}
+            onChange={(e) => setTheme(e.target.value as ThemeMode)}
             style={{
-              padding: "12px 18px",
-              border: "none",
-              borderRadius: 10,
-              background: isLoading ? "#94a3b8" : colors.buttonBg,
-              color: colors.buttonText,
-              fontSize: 16,
-              cursor: isLoading ? "not-allowed" : "pointer",
+              ...secondaryButtonStyle,
+              appearance: "none",
             }}
           >
-            {isLoading ? "查询中..." : "查看天气地图"}
-          </button>
-
-          <button onClick={handleUseDefaultCity} style={secondaryButtonStyle}>
-            使用默认城市：{defaultCity}
-          </button>
-
-          <button
-            onClick={handleOpenOriginalVentusky}
-            style={secondaryButtonStyle}
-          >
-            打开 Ventusky 原网页
-          </button>
+            <option value="system">跟随系统</option>
+            <option value="light">浅色模式</option>
+            <option value="dark">深色模式</option>
+          </select>
         </div>
 
         <div
           style={{
-            background: colors.panelBg,
-            color: colors.text,
-            border: `1px solid ${colors.border}`,
-            borderRadius: 12,
-            padding: 12,
+            display: "grid",
+            gridTemplateColumns: "340px minmax(0, 1fr)",
+            gap: 16,
+            alignItems: "stretch",
             marginBottom: 16,
           }}
         >
-          <strong style={{ color: colors.heading }}>默认城市设置</strong>
+          <aside
+            style={{
+              background: colors.panelBg,
+              border: `1px solid ${colors.border}`,
+              borderRadius: 16,
+              padding: 16,
+            }}
+          >
+            <strong style={{ color: colors.heading, fontSize: 18 }}>
+              地图控制
+            </strong>
+
+            <div style={{ color: colors.mutedText, marginTop: 6 }}>
+              搜索地点并切换天气图层。
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+                marginTop: 16,
+              }}
+            >
+              <input
+                value={place}
+                onChange={(e) => setPlace(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch();
+                  }
+                }}
+                placeholder="输入城市或地点，例如 London"
+                style={{
+                  ...inputStyle,
+                  width: "100%",
+                  boxSizing: "border-box",
+                }}
+              />
+
+              <button
+                onClick={() => handleSearch()}
+                disabled={isLoading}
+                style={{
+                  padding: "12px 18px",
+                  border: "none",
+                  borderRadius: 10,
+                  background: isLoading ? "#94a3b8" : colors.buttonBg,
+                  color: colors.buttonText,
+                  fontSize: 16,
+                  cursor: isLoading ? "not-allowed" : "pointer",
+                }}
+              >
+                {isLoading ? "查询中..." : "查看天气地图"}
+              </button>
+
+              <button
+                onClick={handleUseDefaultCity}
+                style={secondaryButtonStyle}
+              >
+                使用默认城市：{defaultCity}
+              </button>
+
+              <button
+                onClick={handleOpenOriginalVentusky}
+                style={secondaryButtonStyle}
+              >
+                打开 Ventusky 原网页
+              </button>
+            </div>
+
+            <div style={{ marginTop: 18 }}>
+              <strong style={{ color: colors.heading }}>天气图层</strong>
+
+              <div
+                style={{
+                  display: "flex",
+                  gap: 8,
+                  flexWrap: "wrap",
+                  marginTop: 10,
+                }}
+              >
+                {WEATHER_LAYERS.map((layer) => (
+                  <button
+                    key={layer.value}
+                    onClick={() => handleLayerChange(layer.value)}
+                    style={{
+                      padding: "9px 12px",
+                      borderRadius: 999,
+                      border:
+                        selectedLayer === layer.value
+                          ? "1px solid #2563eb"
+                          : `1px solid ${colors.border}`,
+                      background:
+                        selectedLayer === layer.value
+                          ? "#2563eb"
+                          : colors.secondaryButtonBg,
+                      color:
+                        selectedLayer === layer.value
+                          ? "#ffffff"
+                          : colors.secondaryButtonText,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {layer.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div
+  style={{
+    width: "100%",
+    boxSizing: "border-box",
+    background: colors.cardBg,
+    color: colors.text,
+    border: `1px solid ${colors.border}`,
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 18,
+    textAlign: "left",
+  }}
+>
+  <div
+    style={{
+      fontSize: 18,
+      fontWeight: 700,
+      color: colors.heading,
+      marginBottom: 10,
+    }}
+  >
+    当前图层：{currentLayer.label}
+  </div>
+
+  <div
+    style={{
+      color: colors.mutedText,
+      lineHeight: 1.6,
+      marginBottom: displayName || status ? 10 : 0,
+    }}
+  >
+    {currentLayer.description}
+  </div>
+
+  {displayName && (
+    <div
+      style={{
+        color: colors.mutedText,
+        lineHeight: 1.6,
+        marginBottom: 6,
+      }}
+    >
+      当前地点：{displayName}
+    </div>
+  )}
+
+  <div
+    style={{
+      color: colors.mutedText,
+      lineHeight: 1.6,
+    }}
+  >
+    {status}
+  </div>
+</div>
+          </aside>
+
+          <section
+            style={{
+              background: colors.panelBg,
+              border: `1px solid ${colors.border}`,
+              borderRadius: 16,
+              padding: 12,
+              minHeight: 680,
+            }}
+          >
+            {mapUrl ? (
+              <iframe
+                title="Ventusky Weather Map"
+                src={mapUrl}
+                style={{
+                  width: "100%",
+                  height: "680px",
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: 14,
+                  background: colors.panelBg,
+                }}
+                allowFullScreen
+              />
+            ) : (
+              <div
+                style={{
+                  height: "680px",
+                  border: `2px dashed ${colors.border}`,
+                  borderRadius: 14,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: colors.mutedText,
+                  fontSize: 18,
+                  background: colors.panelBg,
+                  textAlign: "center",
+                  padding: 24,
+                }}
+              >
+                搜索一个地点后，这里会显示 Ventusky 天气地图。
+              </div>
+            )}
+          </section>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 16,
+            marginBottom: 16,
+          }}
+        >
+          <div
+            style={{
+              background: colors.panelBg,
+              color: colors.text,
+              border: `1px solid ${colors.border}`,
+              borderRadius: 12,
+              padding: 12,
+            }}
+          >
+            <strong style={{ color: colors.heading }}>默认城市设置</strong>
+
+            <div
+              style={{
+                display: "flex",
+                gap: 8,
+                marginTop: 10,
+                flexWrap: "wrap",
+              }}
+            >
+              <input
+                value={defaultCityInput}
+                onChange={(e) => setDefaultCityInput(e.target.value)}
+                placeholder="设置默认城市，例如 Shanghai"
+                style={{
+                  ...inputStyle,
+                  width: 260,
+                  maxWidth: "100%",
+                }}
+              />
+
+              <button
+                onClick={handleSaveDefaultCity}
+                style={secondaryButtonStyle}
+              >
+                保存默认城市
+              </button>
+
+              <button
+                onClick={handleSetCurrentAsDefaultCity}
+                style={secondaryButtonStyle}
+              >
+                把当前输入设为默认城市
+              </button>
+            </div>
+
+            <div style={{ color: colors.weakText, marginTop: 8 }}>
+              当前默认城市：{defaultCity}
+            </div>
+          </div>
 
           <div
             style={{
-              display: "flex",
-              gap: 8,
-              marginTop: 10,
-              flexWrap: "wrap",
+              background: colors.panelBg,
+              color: colors.text,
+              border: `1px solid ${colors.border}`,
+              borderRadius: 12,
+              padding: 12,
             }}
           >
-            <input
-              value={defaultCityInput}
-              onChange={(e) => setDefaultCityInput(e.target.value)}
-              placeholder="设置默认城市，例如 Shanghai"
+            <div
               style={{
-                ...inputStyle,
-                width: 300,
-                maxWidth: "100%",
-              }}
-            />
-
-            <button onClick={handleSaveDefaultCity} style={secondaryButtonStyle}>
-              保存默认城市
-            </button>
-
-            <button
-              onClick={handleSetCurrentAsDefaultCity}
-              style={secondaryButtonStyle}
-            >
-              把当前输入设为默认城市
-            </button>
-          </div>
-
-          <div style={{ color: colors.weakText, marginTop: 8 }}>
-            当前默认城市：{defaultCity}
-          </div>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            gap: 8,
-            flexWrap: "wrap",
-            marginBottom: 16,
-          }}
-        >
-          {WEATHER_LAYERS.map((layer) => (
-            <button
-              key={layer.value}
-              onClick={() => handleLayerChange(layer.value)}
-              style={{
-                padding: "10px 14px",
-                borderRadius: 999,
-                border:
-                  selectedLayer === layer.value
-                    ? "1px solid #2563eb"
-                    : `1px solid ${colors.border}`,
-                background:
-                  selectedLayer === layer.value
-                    ? "#2563eb"
-                    : colors.secondaryButtonBg,
-                color:
-                  selectedLayer === layer.value
-                    ? "#ffffff"
-                    : colors.secondaryButtonText,
-                cursor: "pointer",
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 12,
+                alignItems: "center",
+                flexWrap: "wrap",
+                marginBottom: history.length > 0 ? 10 : 0,
               }}
             >
-              {layer.label}
-            </button>
-          ))}
-        </div>
+              <strong style={{ color: colors.heading }}>最近搜索记录</strong>
 
-        <div
-          style={{
-            background: colors.panelBg,
-            color: colors.text,
-            border: `1px solid ${colors.border}`,
-            borderRadius: 12,
-            padding: 12,
-            marginBottom: 16,
-          }}
-        >
-          <strong style={{ color: colors.heading }}>
-            当前图层：{currentLayer.label}
-          </strong>
-
-          <div style={{ color: colors.mutedText, marginTop: 4 }}>
-            {currentLayer.description}
-          </div>
-
-          {displayName && (
-            <div style={{ color: colors.mutedText, marginTop: 8 }}>
-              当前地点：{displayName}
+              {history.length > 0 && (
+                <button
+                  onClick={handleClearHistory}
+                  style={{
+                    padding: "6px 10px",
+                    borderRadius: 8,
+                    border: `1px solid ${colors.border}`,
+                    background: colors.dangerBg,
+                    color: colors.dangerText,
+                    cursor: "pointer",
+                  }}
+                >
+                  清空记录
+                </button>
+              )}
             </div>
-          )}
+
+            {history.length === 0 ? (
+              <div style={{ color: colors.mutedText }}>暂无搜索记录。</div>
+            ) : (
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                {history.map((item) => (
+                  <button
+                    key={`${item.place}-${item.searchedAt}`}
+                    onClick={() => handleHistoryClick(item)}
+                    title={item.displayName}
+                    style={{
+                      padding: "8px 12px",
+                      borderRadius: 999,
+                      border: `1px solid ${colors.border}`,
+                      background:
+                        item.place === locationLabel
+                          ? colors.activeSoft
+                          : colors.secondaryButtonBg,
+                      color:
+                        item.place === locationLabel
+                          ? "#ffffff"
+                          : colors.secondaryButtonText,
+                      cursor: "pointer",
+                      maxWidth: 240,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {item.place}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
-         <div
+        <div
           style={{
             background: colors.panelBg,
             color: colors.text,
             border: `1px solid ${colors.border}`,
             borderRadius: 12,
             padding: 12,
-            marginBottom: 16,
+            marginBottom: 0,
           }}
         >
           <strong style={{ color: colors.heading }}>台风追踪工具</strong>
@@ -700,115 +909,6 @@ function openVentuskyRadarLayer() {
             </button>
           </div>
         </div>
-
-        <div
-          style={{
-            background: colors.panelBg,
-            color: colors.text,
-            border: `1px solid ${colors.border}`,
-            borderRadius: 12,
-            padding: 12,
-            marginBottom: 16,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 12,
-              alignItems: "center",
-              flexWrap: "wrap",
-              marginBottom: history.length > 0 ? 10 : 0,
-            }}
-          >
-            <strong style={{ color: colors.heading }}>最近搜索记录</strong>
-
-            {history.length > 0 && (
-              <button
-                onClick={handleClearHistory}
-                style={{
-                  padding: "6px 10px",
-                  borderRadius: 8,
-                  border: `1px solid ${colors.border}`,
-                  background: colors.dangerBg,
-                  color: colors.dangerText,
-                  cursor: "pointer",
-                }}
-              >
-                清空记录
-              </button>
-            )}
-          </div>
-
-          {history.length === 0 ? (
-            <div style={{ color: colors.mutedText }}>暂无搜索记录。</div>
-          ) : (
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              {history.map((item) => (
-                <button
-                  key={`${item.place}-${item.searchedAt}`}
-                  onClick={() => handleHistoryClick(item)}
-                  title={item.displayName}
-                  style={{
-                    padding: "8px 12px",
-                    borderRadius: 999,
-                    border: `1px solid ${colors.border}`,
-                    background:
-                      item.place === locationLabel
-                        ? colors.activeSoft
-                        : colors.secondaryButtonBg,
-                    color:
-                      item.place === locationLabel
-                        ? "#ffffff"
-                        : colors.secondaryButtonText,
-                    cursor: "pointer",
-                    maxWidth: 240,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {item.place}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <p style={{ color: colors.mutedText }}>{status}</p>
-
-        {mapUrl ? (
-          <iframe
-            title="Ventusky Weather Map"
-            src={mapUrl}
-            style={{
-              width: "100%",
-              height: "72vh",
-              border: `1px solid ${colors.border}`,
-              borderRadius: 16,
-              background: colors.panelBg,
-            }}
-            allowFullScreen
-          />
-        ) : (
-          <div
-            style={{
-              height: "50vh",
-              border: `2px dashed ${colors.border}`,
-              borderRadius: 16,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: colors.mutedText,
-              fontSize: 18,
-              background: colors.panelBg,
-              textAlign: "center",
-              padding: 24,
-            }}
-          >
-            搜索一个地点后，这里会显示 Ventusky 天气地图。
-          </div>
-        )}
       </section>
     </main>
   );
